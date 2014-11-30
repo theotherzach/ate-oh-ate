@@ -3,6 +3,7 @@
 
   angular.module("app").controller("sequencerCtrl", function ($scope, $timeout) {
 
+    // ======== STATE ========
     var patterns = {
       CYmbal: [],
       HiHat: [3, 7, 11, 15],
