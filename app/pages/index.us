@@ -11,16 +11,22 @@
       <table>
         <tr>
           <th>Step</th>
-          <th ng-repeat="step in steps">{{ step }}</th>
+          <th ng-repeat="step in steps"
+              ng-class="{'current-step': currentStep === step}">
+            {{ step }}
+          </th>
         </tr>
         <tr ng-repeat="instrument in instruments">
           <th>{{ instrument }}</th>
           <td ng-repeat="step in steps"
+              ng-class="{'current-step': currentStep === step}"
               ng-click="toggleStep(instrument, step)">
             {{ note(instrument, step) }}
           </td>
         </tr>
       </table>
+
+      <button ng-click="toggleSequence()">{{ isRunning ? 'Stop' : 'Start' }}</button>
     </div>
 
     <script type="text/javascript" src="<%= js %>"></script>
