@@ -1,7 +1,7 @@
 ;(function () {
   "use strict";
 
-  angular.module("app").controller("sequencerCtrl", function ($scope, $interval) {
+  angular.module("app").controller("sequencerCtrl", function ($scope, $timeout) {
 
     var patterns = {
       CYmbal: [],
@@ -16,13 +16,19 @@
       ACcent: []
     };
 
-    $scope.currentStep = 1;
+
+    var tickId = null;
 
     $scope.isRunning = false;
 
+    $scope.currentStep = 1;
+
+    $scope.bpm = 60;
+    // =======================
+
     $scope.steps = _.range(1, 17);
 
-    $scope.instruments = "CYmbal HiHat HCP COWbell HiTom MidTom LowTom SnareDrum BassDrum ACcent".split(" ");
+    $scope.instruments = Object.keys(patterns);
 
     $scope.toggleStep = function (instrument, step) {
       var beats = patterns[instrument];
@@ -43,18 +49,21 @@
     };
 
     function tick() {
-      return $interval(function () {
-        $scope.currentStep = ($scope.currentStep + 1) % 16 || 16
-      }, 1000)
+      if ($scope.isRunning) {
+        return $timeout(function () {
+          $scope.currentStep = ($scope.currentStep + 1) % 16 || 16;
+          tickId = tick();
+        }, (60 / $scope.bpm) * 1000)
+      }
     }
 
     $scope.toggleSequence = function () {
       if ($scope.isRunning) {
-        console.log('hai')
-        $interval.cancel($scope.isRunning);
         $scope.isRunning = false;
+        $timeout.cancel(tickId);
       } else {
-        $scope.isRunning = tick();
+        $scope.isRunning = true;
+        tickId = tick();
       }
     };
 
