@@ -5,7 +5,24 @@
 
     <link rel="stylesheet" type="text/css" href="<%= css %>" media="all" />
   </head>
-  <body>
+  <body ng-app="app">
+
+    <div ng-controller="sequencerCtrl">
+      <table>
+        <tr>
+          <th>Step</th>
+          <th ng-repeat="step in steps">{{ step }}</th>
+        </tr>
+        <tr ng-repeat="instrument in instruments">
+          <th>{{ instrument }}</th>
+          <td ng-repeat="step in steps"
+              ng-click="toggleStep(instrument, step)">
+            {{ note(instrument, step) }}
+          </td>
+        </tr>
+      </table>
+    </div>
+
     <script type="text/javascript" src="<%= js %>"></script>
   </body>
 </html>
