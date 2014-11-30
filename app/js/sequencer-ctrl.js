@@ -17,7 +17,6 @@
       ACcent: []
     };
 
-
     var tickId = null;
 
     $scope.isRunning = false;
@@ -50,11 +49,13 @@
     };
 
     function tick() {
+      var bpm = parseInt($scope.bpm) || 60;
+
       if ($scope.isRunning) {
         return $timeout(function () {
           $scope.currentStep = ($scope.currentStep + 1) % 16 || 16;
           tickId = tick();
-        }, (60 / $scope.bpm) * 1000)
+        }, (60 / bpm) * 1000)
       }
     }
 
