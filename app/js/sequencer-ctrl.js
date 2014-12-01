@@ -19,14 +19,19 @@
 
     var tickId = null;
 
-    $scope.isRunning = false;
-
     $scope.currentStep = 1;
 
     $scope.bpm = 60;
     // =======================
 
+
+    // 8 steps = 1 bar = 4 beats
     $scope.steps = _.range(1, 17);
+
+
+    $scope.isRunning = function () {
+      return tickId !== null;
+    }
 
     $scope.instruments = Object.keys(patterns);
 
@@ -48,23 +53,24 @@
       }
     };
 
+    function msToNextStep(bpm) {
+      return (((60 / bpm) * 4) / 8) * 1000
+    }
+
     function tick() {
       var bpm = parseInt($scope.bpm) || 60;
 
-      if ($scope.isRunning) {
-        return $timeout(function () {
-          $scope.currentStep = ($scope.currentStep + 1) % 16 || 16;
-          tickId = tick();
-        }, (60 / bpm) * 1000)
-      }
+      return $timeout(function () {
+        $scope.currentStep = ($scope.currentStep + 1) % 16 || 16;
+        tickId = tick();
+      }, msToNextStep(bpm))
     }
 
     $scope.toggleSequence = function () {
-      if ($scope.isRunning) {
-        $scope.isRunning = false;
+      if ($scope.isRunning()) {
         $timeout.cancel(tickId);
+        tickId = null;
       } else {
-        $scope.isRunning = true;
         tickId = tick();
       }
     };
