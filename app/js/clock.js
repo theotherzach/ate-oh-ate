@@ -22,8 +22,8 @@
 
       function tick() {
         callback();
-        setTimeout(tick, (60 / self._bpm) * 1000)
-      };
+        setTimeout(tick, (60 / self._bpm) * 1000);
+      }
 
       tick();
       return self;

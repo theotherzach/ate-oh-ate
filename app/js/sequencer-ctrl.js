@@ -31,17 +31,17 @@
 
     $scope.isRunning = function () {
       return tickId !== null;
-    }
+    };
 
     $scope.instruments = Object.keys(patterns);
 
     $scope.toggleStep = function (instrument, step) {
-      var beats = patterns[instrument];
+      var pattern = patterns[instrument];
 
-      if (beats.indexOf(step) > -1) {
-        beats.splice(beats.indexOf(step), 1);
+      if (pattern.indexOf(step) > -1) {
+        pattern.splice(pattern.indexOf(step), 1);
       } else {
-        beats.push(step);
+        pattern.push(step);
       }
     };
 
@@ -54,16 +54,16 @@
     };
 
     function msToNextStep(bpm) {
-      return (((60 / bpm) * 4) / 8) * 1000
+      return (((60 / bpm) * 4) / 8) * 1000;
     }
 
     function tick() {
-      var bpm = parseInt($scope.bpm) || 60;
+      var bpm = parseInt($scope.bpm, 10) || 60;
 
       return $timeout(function () {
         $scope.currentStep = ($scope.currentStep + 1) % 16 || 16;
         tickId = tick();
-      }, msToNextStep(bpm))
+      }, msToNextStep(bpm));
     }
 
     $scope.toggleSequence = function () {
