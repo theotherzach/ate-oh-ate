@@ -19,7 +19,7 @@
 
     var tickId = null;
 
-    $scope.currentStep = 1;
+    $scope.currentStep = 0;
 
     $scope.bpm = 60;
     // =======================
@@ -69,6 +69,7 @@
     $scope.toggleSequence = function () {
       if ($scope.isRunning()) {
         $timeout.cancel(tickId);
+        $scope.currentStep = 0;
         tickId = null;
       } else {
         tickId = tick();
