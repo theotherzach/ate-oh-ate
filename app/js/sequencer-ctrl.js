@@ -15,7 +15,6 @@
       LowTom: [],
       SnareDrum: [5, 13],
       BassDrum: [1, 5, 9, 13],
-      ACcent: []
     };
 
     var tickId = null;
@@ -42,8 +41,8 @@
 
       return $timeout(function () {
         $scope.currentStep = ($scope.currentStep + 1) % $scope.duration || $scope.duration;
-        _(stepInstruments[$scope.currentStep - 1]).each(function(instrument, key) {
-          if (patterns[key].indexOf($scope.currentStep) > -1) {
+        _(stepInstruments[$scope.currentStep - 1]).each(function(instrument, instrumentName) {
+          if (patterns[instrumentName].indexOf($scope.currentStep) > -1) {
             instrument.play()
           }
         });

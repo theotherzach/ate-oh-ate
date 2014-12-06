@@ -11,12 +11,11 @@
 
       <controls>
       <p>
-      <form ng-submit="setDuration(newDuration)">
-        <input type="text"
-             ng-model="newDuration"
-             ng-init="newDuration=duration">
-        <button>Set Duration</button>
-      </form>
+      <select ng-model="duration"
+              ng-options="bpm for bpm in [8, 16, 32]"
+              ng-change="setDuration(duration)">
+      </select>
+      Duration
       </p>
       <p>
       <form ng-submit="setBpm(newBpm)">
