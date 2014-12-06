@@ -23,6 +23,7 @@
     $scope.currentStep = 0;
 
     $scope.bpm = 128;
+    $scope.newBpm = $scope.bpm;
 
     $scope.duration = 16;
     // =======================
@@ -50,6 +51,10 @@
 
     $scope.isRunning = function () {
       return tickId !== null;
+    };
+
+    $scope.setBPM = function(bpm) {
+      $scope.bpm = bpm;
     };
 
     $scope.instruments = Object.keys(patterns);

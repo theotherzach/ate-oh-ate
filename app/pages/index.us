@@ -7,8 +7,27 @@
   </head>
   <body ng-app="app">
 
-    <div ng-controller="sequencerCtrl">
-      <table>
+    <div ng-controller="sequencerCtrl" class="container">
+      <controls>
+      <p>
+      <form>
+        <input type="text"
+             ng-model="duration">
+        <button>Set Duration</button>
+      </form>
+      </p>
+      <p>
+      <form ng-submit="setBPM(newBpm)">
+        <input type="text"
+             ng-model="newBpm">
+        <button>Set BPM</button>
+      </form>
+      </p>
+      <button ng-click="toggleSequence()">
+        {{ isRunning() ? 'Stop' : 'Start' }}
+      </button>
+      </controls>
+      <table class="patterns">
         <tr>
           <th>Step</th>
           <th ng-repeat="step in steps(duration)"
@@ -20,19 +39,13 @@
           <th>{{ instrument }}</th>
           <td ng-repeat="step in steps(duration)"
               ng-class="{'current-step': currentStep === step}"
-              ng-click="toggleStep(instrument, step)">
+              ng-click="toggleStep(instrument, step)"
+              class="step">
             {{ note(instrument, step) }}
           </td>
         </tr>
       </table>
 
-      <input type="text"
-             ng-model="duration">
-      <input type="text"
-             ng-model="bpm">
-      <button ng-click="toggleSequence()">
-        {{ isRunning() ? 'Stop' : 'Start' }}
-      </button>
     </div>
 
     <script type="text/javascript" src="<%= js %>"></script>
