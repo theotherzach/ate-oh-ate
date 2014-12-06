@@ -23,13 +23,16 @@
     $scope.currentStep = 0;
 
     $scope.bpm = 128;
+
+    $scope.duration = 16;
     // =======================
 
 
-    // 8 steps = 1 bar = 4 beats
-    $scope.steps = _.range(1, 17);
+    $scope.steps = function (duration) {
+      return _.range(1, parseInt(duration, 10) + 1);
+    }
 
-    var stepInstruments = $scope.steps.map(function(step) {
+    var stepInstruments = $scope.steps($scope.duration).map(function(step) {
       return {
         CYmbal: new Audio('/Cymbal/Cym80815.wav'),
         HCP: new Audio('/Clap/Clap80823.wav'),
@@ -69,22 +72,22 @@
       }
     };
 
-    function msToNextStep(bpm) {
-      return ((60 / bpm)  / 4) * 1000;
+    function msToNextStep(bpm, duration) {
+      return (((60 / bpm) * 4)  / duration) * 1000;
     }
 
-    function tick() {
+    function tick(duration) {
       var bpm = parseInt($scope.bpm, 10) || 60;
 
       return $timeout(function () {
-        $scope.currentStep = ($scope.currentStep + 1) % 16 || 16;
+        $scope.currentStep = ($scope.currentStep + 1) % duration || duration;
         _(stepInstruments[$scope.currentStep - 1]).each(function(instrument, key) {
           if (patterns[key].indexOf($scope.currentStep) > -1) {
             instrument.play()
           }
         });
-        tickId = tick();
-      }, msToNextStep(bpm));
+        tickId = tick(duration);
+      }, msToNextStep(bpm, duration));
     }
 
     $scope.toggleSequence = function () {
@@ -93,7 +96,7 @@
         $scope.currentStep = 0;
         tickId = null;
       } else {
-        tickId = tick();
+        tickId = tick(parseInt($scope.duration, 10));
       }
     };
 

@@ -11,14 +11,14 @@
       <table>
         <tr>
           <th>Step</th>
-          <th ng-repeat="step in steps"
+          <th ng-repeat="step in steps(duration)"
               ng-class="{'current-step': currentStep === step}">
             {{ step }}
           </th>
         </tr>
         <tr ng-repeat="instrument in instruments">
           <th>{{ instrument }}</th>
-          <td ng-repeat="step in steps"
+          <td ng-repeat="step in steps(duration)"
               ng-class="{'current-step': currentStep === step}"
               ng-click="toggleStep(instrument, step)">
             {{ note(instrument, step) }}
@@ -26,6 +26,8 @@
         </tr>
       </table>
 
+      <input type="text"
+             ng-model="duration">
       <input type="text"
              ng-model="bpm">
       <button ng-click="toggleSequence()">
