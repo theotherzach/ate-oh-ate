@@ -8,18 +8,21 @@
   <body ng-app="app">
 
     <div ng-controller="sequencerCtrl" class="container">
+
       <controls>
       <p>
-      <form>
+      <form ng-submit="setDuration(newDuration)">
         <input type="text"
-             ng-model="duration">
+             ng-model="newDuration"
+             ng-init="newDuration=duration">
         <button>Set Duration</button>
       </form>
       </p>
       <p>
-      <form ng-submit="setBPM(newBpm)">
+      <form ng-submit="setBpm(newBpm)">
         <input type="text"
-             ng-model="newBpm">
+             ng-model="newBpm"
+             ng-init="newBpm=bpm">
         <button>Set BPM</button>
       </form>
       </p>
@@ -27,6 +30,7 @@
         {{ isRunning() ? 'Stop' : 'Start' }}
       </button>
       </controls>
+
       <table class="patterns">
         <tr>
           <th>Step</th>

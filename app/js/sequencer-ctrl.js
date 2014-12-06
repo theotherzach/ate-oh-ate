@@ -23,7 +23,6 @@
     $scope.currentStep = 0;
 
     $scope.bpm = 128;
-    $scope.newBpm = $scope.bpm;
 
     $scope.duration = 16;
     // =======================
@@ -53,8 +52,12 @@
       return tickId !== null;
     };
 
-    $scope.setBPM = function(bpm) {
-      $scope.bpm = bpm;
+    $scope.setBpm = function(bpm) {
+      $scope.bpm = parseInt(bpm, 10);
+    };
+
+    $scope.setDuration = function(duration) {
+      $scope.duration = parseInt(duration, 10);
     };
 
     $scope.instruments = Object.keys(patterns);
@@ -81,18 +84,18 @@
       return (((60 / bpm) * 4)  / duration) * 1000;
     }
 
-    function tick(duration) {
+    function tick() {
       var bpm = parseInt($scope.bpm, 10) || 60;
 
       return $timeout(function () {
-        $scope.currentStep = ($scope.currentStep + 1) % duration || duration;
+        $scope.currentStep = ($scope.currentStep + 1) % $scope.duration || $scope.duration;
         _(stepInstruments[$scope.currentStep - 1]).each(function(instrument, key) {
           if (patterns[key].indexOf($scope.currentStep) > -1) {
             instrument.play()
           }
         });
-        tickId = tick(duration);
-      }, msToNextStep(bpm, duration));
+        tickId = tick();
+      }, msToNextStep(bpm, $scope.duration));
     }
 
     $scope.toggleSequence = function () {
@@ -101,7 +104,7 @@
         $scope.currentStep = 0;
         tickId = null;
       } else {
-        tickId = tick(parseInt($scope.duration, 10));
+        tickId = tick();
       }
     };
 
