@@ -32,8 +32,8 @@
     // =======================
 
 
-    function msToNextStep(bpm, duration) {
-      return (((60 / bpm) * 4)  / duration) * 1000;
+    function msToNextStep(bpm) {
+      return ((60 / bpm) / 4) * 1000;
     }
 
     function tick() {
@@ -47,7 +47,7 @@
           }
         });
         tickId = tick();
-      }, msToNextStep(bpm, $scope.duration));
+      }, msToNextStep(bpm));
     }
 
 
