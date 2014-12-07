@@ -13,6 +13,7 @@
       HiTom: [],
       MidTom: [],
       LowTom: [],
+      RimShot: [],
       SnareDrum: [5, 13],
       BassDrum: [1, 5, 9, 13],
     };
@@ -71,6 +72,7 @@
           HiTom: new Audio('/Toms/Tom80844.wav'),
           MidTom: new Audio('/Toms/Tom80819.wav'),
           LowTom: new Audio('/Toms/Tom8086.wav'),
+          RimShot: new Audio('/RimShot/Rim8088.wav'),
           ClosedHihat: new Audio('/ClosedHiHat/CH80833.wav'),
           OpenHihat: new Audio('/OpenHiHat/OH80817.wav'),
           SnareDrum: new Audio('/SnareDrum/Snare80837.wav'),
