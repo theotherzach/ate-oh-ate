@@ -33,13 +33,14 @@
       <table class="patterns">
         <tr>
           <th>Step</th>
-          <th ng-repeat="step in steps"
+          <th class="column-header"
+              ng-repeat="step in steps"
               ng-class="{'current-step': currentStep === step}">
             {{ step }}
           </th>
         </tr>
         <tr ng-repeat="instrument in instruments">
-          <th>{{ instrument }}</th>
+          <th class="row-header">{{ instrument }}</th>
           <td ng-repeat="step in steps"
               ng-class="{'current-step': currentStep === step}"
               ng-click="toggleStep(instrument, step)"

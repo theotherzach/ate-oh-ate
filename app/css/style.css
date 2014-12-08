@@ -17,6 +17,18 @@ controls {
   flex: 7;
 }
 
+.row-header {
+  border-right: 1px dashed #ccc;
+}
+
+.column-header {
+  border-bottom: 1px dashed #ccc;
+}
+
 .step {
-  min-width: 10px;
+  text-align: center;
+  min-width: 15px;
+  height: 18px;
+  border-bottom: 1px dashed #ccc;
+  border-right: 1px dashed #ccc;
 }
