@@ -13,7 +13,7 @@
       <p>
       <select ng-model="duration"
               ng-options="bpm for bpm in [8, 16, 32]"
-              ng-change="setDuration(duration)">
+              ng-change="setDuration()">
       </select>
       Duration
       </p>
