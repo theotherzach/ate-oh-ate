@@ -35,14 +35,14 @@
           <th>Step</th>
           <th class="column-header"
               ng-repeat="step in steps"
-              ng-class="{'current-step': currentStep === step}">
+              ng-class="{'current-step': isCurrentStep(step)}">
             {{ step }}
           </th>
         </tr>
         <tr ng-repeat="instrument in instruments">
           <th class="row-header">{{ instrument }}</th>
           <td ng-repeat="step in steps"
-              ng-class="{'current-step': currentStep === step}"
+              ng-class="{'current-step': isCurrentStep(step)}"
               ng-click="toggleStep(instrument, step)"
               class="step">
             {{ note(instrument, step) }}

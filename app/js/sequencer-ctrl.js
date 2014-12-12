@@ -3,21 +3,36 @@
 
   angular.module("app").controller("sequencerCtrl", function ($scope, $timeout) {
 
+
+    function makeTracks() {
+      return {
+        CYmbal: { url: '/Cymbal/Cym80815.wav', pattern: {} },
+        HCP: { url: '/Clap/Clap80823.wav', pattern: {} },
+        COWbell: { url: '/CowBell/Cowbell80810.wav', pattern: {} },
+        HiTom: { url: '/Toms/Tom80844.wav', pattern: {} },
+        MidTom: { url: '/Toms/Tom80819.wav', pattern: {} },
+        LowTom: { url: '/Toms/Tom8086.wav', pattern: {} },
+        RimShot: { url: '/RimShot/Rim8088.wav', pattern: {} },
+        CLaves: { url: '/Claves/Clave8084.wav', pattern: {} },
+        ClosedHihat: { url: '/ClosedHiHat/CH80833.wav', pattern: {} },
+        OpenHihat: { url: '/OpenHiHat/OH80817.wav', pattern: {} },
+        SnareDrum: { url: '/SnareDrum/Snare80837.wav', pattern: {} },
+        BassDrum: { url: '/BassDrum/Un-Pitched/Kick80810.wav', pattern: {} },
+      };
+    }
+
     // ======== STATE ========
-    var patterns = {
-      CYmbal: [],
-      ClosedHihat: [3, 7, 11, 15],
-      OpenHihat: [],
-      HCP: [],
-      COWbell: [],
-      HiTom: [],
-      MidTom: [],
-      LowTom: [],
-      RimShot: [],
-      CLaves: [],
-      SnareDrum: [5, 13],
-      BassDrum: [1, 5, 9, 13],
-    };
+
+    $scope.variations = [{
+      tracks: makeTracks(),
+      duration: 16,
+    }, {
+      tracks: makeTracks(),
+      duration: 8,
+    }, {
+      tracks: makeTracks(),
+      duration: 32,
+    }];
 
     var tickId = null;
 
@@ -25,31 +40,34 @@
 
     $scope.bpm = 128;
 
-    $scope.duration = 16;
+    $scope.duration = 8;
 
-    $scope.steps = null;
-
-    var stepInstruments = null;
+    $scope.steps = [];
 
     // =======================
 
+    $scope.instruments = Object.keys(makeTracks());
 
     function msToNextStep(bpm) {
       return ((60 / bpm) / 4) * 1000;
     }
 
     function tick() {
-      var bpm = parseInt($scope.bpm, 10) || 60;
 
       return $timeout(function () {
-        $scope.currentStep = ($scope.currentStep + 1) % $scope.duration || $scope.duration;
-        _(stepInstruments[$scope.currentStep - 1]).each(function(instrument, instrumentName) {
-          if (patterns[instrumentName].indexOf($scope.currentStep) > -1) {
-            instrument.play()
-          }
+        $scope.currentStep = $scope.currentStep + 1;
+
+        $scope.variations.forEach(function (variation) {
+          var step = $scope.currentStep % variation.duration || variation.duration;
+          _(variation.tracks).forEach(function (track) {
+            if (track.pattern[step] !== undefined) {
+              track.pattern[step].play();
+            }
+          });
         });
+
         tickId = tick();
-      }, msToNextStep(bpm));
+      }, msToNextStep($scope.bpm));
     }
 
 
@@ -64,44 +82,33 @@
     $scope.setDuration = function(duration) {
       $scope.duration = parseInt(duration, 10);
       $scope.steps =  _.range(1, parseInt(duration, 10) + 1);
-
-      stepInstruments = $scope.steps.map(function(step) {
-        return {
-          CYmbal: new Audio('/Cymbal/Cym80815.wav'),
-          HCP: new Audio('/Clap/Clap80823.wav'),
-          COWbell: new Audio('/CowBell/Cowbell80810.wav'),
-          HiTom: new Audio('/Toms/Tom80844.wav'),
-          MidTom: new Audio('/Toms/Tom80819.wav'),
-          LowTom: new Audio('/Toms/Tom8086.wav'),
-          RimShot: new Audio('/RimShot/Rim8088.wav'),
-          CLaves: new Audio('/Claves/Clave8084.wav'),
-          ClosedHihat: new Audio('/ClosedHiHat/CH80833.wav'),
-          OpenHihat: new Audio('/OpenHiHat/OH80817.wav'),
-          SnareDrum: new Audio('/SnareDrum/Snare80837.wav'),
-          BassDrum: new Audio('/BassDrum/Un-Pitched/Kick80810.wav'),
-        };
-      });
     };
 
     $scope.setDuration($scope.duration);
 
-    $scope.instruments = Object.keys(patterns);
 
     $scope.toggleStep = function (instrument, step) {
-      var pattern = patterns[instrument];
 
-      if (pattern.indexOf(step) > -1) {
-        pattern.splice(pattern.indexOf(step), 1);
+      var track = $scope.variations.filter(function (e) {
+        return e.duration === $scope.duration;
+      })[0].tracks[instrument];
+
+      if (track.pattern[step] === undefined) {
+        track.pattern[step] = new Audio(track.url);
       } else {
-        pattern.push(step);
+        track.pattern[step] = undefined;
       }
     };
 
     $scope.note = function (instrument, step) {
-      if (patterns[instrument].indexOf(step) > -1) {
-        return "o";
-      } else {
+      var track = $scope.variations.filter(function (e) {
+        return e.duration === $scope.duration;
+      })[0].tracks[instrument];
+
+      if (track.pattern[step] === undefined) {
         return "";
+      } else {
+        return "o";
       }
     };
 
@@ -114,6 +121,20 @@
         tickId = tick();
       }
     };
+
+    $scope.isCurrentStep = function(step) {
+      if ($scope.currentStep === 0) {
+        return false;
+      } else {
+        return ($scope.currentStep % $scope.duration || $scope.duration) === step;
+      }
+    };
+
+    $scope.toggleStep('ClosedHihat', 3);
+    $scope.toggleStep('ClosedHihat', 7);
+    $scope.toggleStep('SnareDrum', 5);
+    $scope.toggleStep('BassDrum', 1);
+    $scope.toggleStep('BassDrum', 5);
 
   });
 }());
