@@ -26,16 +26,11 @@
     this.bpm = 128;
     this.setDuration(8);
     this._currentStep = 0;
-    this._variations = [{
-      tracks: makeTracks(),
-      duration: 8,
-    }, {
-      tracks: makeTracks(),
-      duration: 16,
-    }, {
-      tracks: makeTracks(),
-      duration: 32,
-    }];
+    this._variations = {
+      8: makeTracks(),
+      16: makeTracks(),
+      32: makeTracks(),
+    };
 
     this.instruments = Object.keys(makeTracks());
   }
@@ -57,6 +52,20 @@
       return this;
     },
 
+    playStep: function () {
+      var self = this;
+      _(self._variations).forEach(function (variation, duration) {
+        var step = self._currentStep % duration || duration;
+
+        _(variation).forEach(function (track, trackName) {
+          if (track[step] !== undefined) {
+            track[step].play();
+          }
+        });
+      });
+      return this;
+    },
+
     isCurrentStep: function (step) {
       var modDuration = this._currentStep % this.duration;
       if (this._currentStep === 0) {
@@ -69,24 +78,17 @@
     },
 
     toggleStep: function (instrument, step) {
-      var track = _(this._variations).
-        findWhere({ duration: this.duration }).
-        tracks[instrument];
-
-      if (track.pattern[step] === undefined) {
-        track.pattern[step] = new Audio(track.url);
+      var track = this._variations[this.duration][instrument];
+      if (this.isActiveInstrument(instrument, step)) {
+        track[step] = undefined;
       } else {
-        track.pattern[step] = undefined;
+        track[step] = new Audio(track.url);
       }
       return this;
     },
 
     isActiveInstrument: function (instrument, step) {
-      var track = _(this._variations).
-        findWhere({ duration: this.duration }).
-        tracks[instrument];
-
-      return track.pattern[step] !== undefined;
+      return this._variations[this.duration][instrument][step] !== undefined;
     },
   };
 
