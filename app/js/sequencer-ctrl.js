@@ -52,9 +52,8 @@
     }
 
     function tick() {
-
       return $timeout(function () {
-        $scope.currentStep = $scope.currentStep + 1;
+        $scope.currentStep += 1;
 
         $scope.variations.forEach(function (variation) {
           var step = $scope.currentStep % variation.duration || variation.duration;
@@ -68,7 +67,6 @@
         tickId = tick();
       }, msToNextStep($scope.bpm));
     }
-
 
     $scope.isRunning = function () {
       return tickId !== null;
@@ -84,10 +82,7 @@
     };
 
     $scope.toggleStep = function (instrument, step) {
-
-      var track = $scope.variations.filter(function (e) {
-        return e.duration === $scope.duration;
-      })[0].tracks[instrument];
+      var track = _($scope.variations).findWhere({ duration: $scope.duration }).tracks[instrument];
 
       if (track.pattern[step] === undefined) {
         track.pattern[step] = new Audio(track.url);
@@ -97,9 +92,7 @@
     };
 
     $scope.note = function (instrument, step) {
-      var track = $scope.variations.filter(function (e) {
-        return e.duration === $scope.duration;
-      })[0].tracks[instrument];
+      var track = _($scope.variations).findWhere({ duration: $scope.duration }).tracks[instrument];
 
       if (track.pattern[step] === undefined) {
         return "";
@@ -133,7 +126,7 @@
       $scope.toggleStep('SnareDrum', 5);
       $scope.toggleStep('BassDrum', 1);
       $scope.toggleStep('BassDrum', 5);
-    };
+    }
 
     init();
 
