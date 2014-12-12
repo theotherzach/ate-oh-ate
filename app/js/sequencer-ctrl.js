@@ -3,7 +3,6 @@
 
   angular.module("app").controller("sequencerCtrl", function ($scope, $timeout) {
 
-
     function makeTracks() {
       return {
         CYmbal: { url: '/Cymbal/Cym80815.wav', pattern: {} },
@@ -84,9 +83,6 @@
       $scope.steps =  _.range(1, parseInt(duration, 10) + 1);
     };
 
-    $scope.setDuration($scope.duration);
-
-
     $scope.toggleStep = function (instrument, step) {
 
       var track = $scope.variations.filter(function (e) {
@@ -130,11 +126,16 @@
       }
     };
 
-    $scope.toggleStep('ClosedHihat', 3);
-    $scope.toggleStep('ClosedHihat', 7);
-    $scope.toggleStep('SnareDrum', 5);
-    $scope.toggleStep('BassDrum', 1);
-    $scope.toggleStep('BassDrum', 5);
+    function init () {
+      $scope.setDuration($scope.duration);
+      $scope.toggleStep('ClosedHihat', 3);
+      $scope.toggleStep('ClosedHihat', 7);
+      $scope.toggleStep('SnareDrum', 5);
+      $scope.toggleStep('BassDrum', 1);
+      $scope.toggleStep('BassDrum', 5);
+    };
+
+    init();
 
   });
 }());
