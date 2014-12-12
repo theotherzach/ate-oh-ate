@@ -20,8 +20,8 @@
       <p>
       <form ng-submit="setBpm(newBpm)">
         <input type="text"
-             ng-model="newBpm"
-             ng-init="newBpm=bpm">
+               ng-model="newBpm"
+               ng-init="newBpm=bpm">
         <button>Set BPM</button>
       </form>
       </p>
