@@ -18,10 +18,6 @@
     };
   }
 
-  function msToNextStep(bpm) {
-    return ((60 / bpm) / 4) * 1000;
-  }
-
   function Sequencer() {
     this.bpm = 128;
     this.setDuration(8);
@@ -37,7 +33,7 @@
 
   Sequencer.prototype = {
     setDuration: function (duration) {
-      this.duration = duration;
+      this.duration = parseInt(duration, 10);
       this.steps =  _.range(1, this.duration + 1);
       return this;
     },
@@ -85,6 +81,10 @@
         track[step] = new Audio(track.url);
       }
       return this;
+    },
+
+    msToNextStep: function () {
+      return ((60 / this.bpm) / 4) * 1000;
     },
 
     isActiveInstrument: function (instrument, step) {

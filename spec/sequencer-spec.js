@@ -82,4 +82,8 @@ describe("Sequencer", function () {
     });
   });
 
+  it("#msToNextStep", function () {
+    expect(sequencer.msToNextStep()).toBeCloseTo(117, 0)
+  });
+
 });
