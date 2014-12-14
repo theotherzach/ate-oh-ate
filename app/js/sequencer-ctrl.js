@@ -4,8 +4,11 @@
   angular.
     module("app").
     controller("sequencerCtrl", function ($scope, $timeout) {
+
     $scope.seq = new Sequencer();
+
     var stepId = null;
+
     function step() {
       return $timeout(function () {
         $scope.seq.tick();
@@ -14,16 +17,9 @@
       }, $scope.seq.msToNextStep());
     }
 
+
     $scope.isRunning = function () {
       return stepId !== null;
-    };
-
-    $scope.note = function (instrument, step) {
-      if ($scope.seq.isActiveInstrument(instrument, step)) {
-        return "o";
-      } else {
-        return "";
-      }
     };
 
     $scope.toggleSequence = function () {

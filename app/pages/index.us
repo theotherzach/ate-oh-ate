@@ -46,7 +46,7 @@
               ng-class="{'current-step': seq.isCurrentStep(step)}"
               ng-click="seq.toggleStep(instrument, step)"
               class="step">
-            {{ note(instrument, step) }}
+            {{ seq.isActiveInstrument(instrument, step) ? 'o' : '' }}
           </td>
         </tr>
       </table>
