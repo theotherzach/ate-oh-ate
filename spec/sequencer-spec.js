@@ -22,12 +22,11 @@ describe("Sequencer", function () {
     expect(sequencer.steps).toContain(16);
   });
 
-  //TODO: Change to tracks.
   it("has an array of instruments", function () {
     expect(sequencer.instruments).toContain("HCP");
   });
 
-  it("default #isCurrentStep", function () {
+  it("#isCurrentStep returns false when current step is 0", function () {
     expect(sequencer.isCurrentStep(1)).toBe(false);
   });
 
@@ -38,7 +37,7 @@ describe("Sequencer", function () {
     expect(sequencer.isCurrentStep(8)).toBe(true);
   });
 
-  describe("9 calls to #tick", function () {
+  describe("after 9 calls to #tick", function () {
     beforeEach(function () {
       _(9).times(function() {
         sequencer.tick();
@@ -55,29 +54,29 @@ describe("Sequencer", function () {
     });
   });
 
-  describe("#isActiveInstrument", function () {
+  describe("#isActiveInstrument returns", function () {
     beforeEach(function () {
       sequencer.setDuration(16).toggleStep("BassDrum", 1);
     });
 
-    it("returns true", function () {
+    it("true when current instrument is active", function () {
       expect(sequencer.isActiveInstrument("BassDrum", 1)).toBe(true);
     });
 
-    it("false due to duration", function () {
+    it("false due to duration missmatch", function () {
       sequencer.setDuration(32);
       expect(sequencer.isActiveInstrument("BassDrum", 1)).toBe(false);
     });
 
-    it("false  due to step", function () {
+    it("false due to step missmatch", function () {
       expect(sequencer.isActiveInstrument("BassDrum", 2)).toBe(false);
     });
 
-    it("false due to instrument", function () {
+    it("false due to instrument missmatch", function () {
       expect(sequencer.isActiveInstrument("HCP", 2)).toBe(false);
     });
 
-    it("false due to being toggled off", function () {
+    it("false after toggling instrument back off", function () {
       sequencer.setDuration(16).toggleStep("BassDrum", 1);
       expect(sequencer.isActiveInstrument("BassDrum", 1)).toBe(false);
     });
