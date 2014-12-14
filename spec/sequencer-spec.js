@@ -86,4 +86,10 @@ describe("Sequencer", function () {
     expect(sequencer.msToNextStep()).toBeCloseTo(117, 0)
   });
 
+  it("#resetCurrentStep", function () {
+    sequencer.tick();
+    sequencer.resetCurrentStep()
+    expect(sequencer._currentStep).toEqual(0);
+  });
+
 });

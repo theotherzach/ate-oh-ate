@@ -90,6 +90,11 @@
     isActiveInstrument: function (instrument, step) {
       return this._variations[this.duration][instrument][step] !== undefined;
     },
+
+    resetCurrentStep: function () {
+      this._currentStep = 0;
+      return this;
+    }
   };
 
   window.Sequencer = Sequencer;

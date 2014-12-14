@@ -25,8 +25,7 @@
     $scope.toggleSequence = function () {
       if ($scope.isRunning()) {
         $timeout.cancel(stepId);
-        //FIXME: Should not modify _currentStep
-        $scope.seq._currentStep = 0;
+        $scope.seq.resetCurrentStep();
         stepId = null;
       } else {
         stepId = step();
