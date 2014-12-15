@@ -1,5 +1,7 @@
 #sm-808
 
+![demo](/sm-808.gif?raw=true)
+
 ## Video Tour
 
 * [Product](http://youtu.be/l6qlEHVSK1A)
