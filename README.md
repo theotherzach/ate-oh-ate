@@ -20,7 +20,7 @@
 
 * Pull the repo down and cd into the project directory.
 * `npm install`
-* `lineman clean run`
+* `./node_modules/.bin/lineman clean run`
 * `open http://localhost:8000/`
 * To run the tests `lineman spec` (note that the lineman server must be running)
 
