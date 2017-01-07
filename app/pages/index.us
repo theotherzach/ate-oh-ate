@@ -5,54 +5,113 @@
 
     <link rel="stylesheet" type="text/css" href="<%= css %>" media="all" />
   </head>
-  <body ng-app="app">
+  <body>
 
-    <div ng-controller="sequencerCtrl" class="container">
+    <div ng-app="app">
+      <div ng-controller="sequencerCtrl" class="container">
 
-      <controls>
-      <p>
-      <select ng-model="newDuration"
-              ng-init="newDuration=seq.duration"
-              ng-options="bpm for bpm in [8, 16, 32]"
-              ng-change="seq.setDuration(newDuration)">
-      </select>
-      Duration
-      </p>
-      <p>
-      <form ng-submit="seq.setBpm(newBpm)">
-        <input type="text"
-               ng-model="newBpm"
-               ng-init="newBpm=seq.bpm">
-        <button>Set BPM</button>
-      </form>
-      </p>
-      <button ng-click="toggleSequence()">
-        {{ isRunning() ? 'Stop' : 'Start' }}
-      </button>
-      </controls>
+        <controls>
+        <p>
+        <select ng-model="newDuration"
+                ng-init="newDuration=seq.duration"
+                ng-options="bpm for bpm in [8, 16, 32]"
+                ng-change="seq.setDuration(newDuration)">
+        </select>
+        Duration
+        </p>
+        <p>
+        <form ng-submit="seq.setBpm(newBpm)">
+          <input type="text"
+                 ng-model="newBpm"
+                 ng-init="newBpm=seq.bpm">
+          <button>Set BPM</button>
+        </form>
+        </p>
+        <button ng-click="toggleSequence()">
+          {{ isRunning() ? 'Stop' : 'Start' }}
+        </button>
+        </controls>
 
-      <table class="patterns">
-        <tr>
-          <th>Step</th>
-          <th class="column-header"
-              ng-repeat="step in seq.steps"
-              ng-class="{'current-step': seq.isCurrentStep(step)}">
-            {{ step }}
-          </th>
-        </tr>
-        <tr ng-repeat="instrument in seq.instruments">
-          <th class="row-header">{{ instrument }}</th>
-          <td ng-repeat="step in seq.steps"
-              ng-class="{'current-step': seq.isCurrentStep(step)}"
-              ng-click="seq.toggleStep(instrument, step)"
-              class="step">
-            {{ seq.isActiveInstrument(instrument, step) ? 'o' : '' }}
-          </td>
-        </tr>
-      </table>
+        <table class="patterns">
+          <tr>
+            <th>Step</th>
+            <th class="column-header"
+                ng-repeat="step in seq.steps"
+                ng-class="{'current-step': seq.isCurrentStep(step)}">
+              {{ step }}
+            </th>
+          </tr>
+          <tr ng-repeat="instrument in seq.instruments">
+            <th class="row-header">{{ instrument }}</th>
+            <td ng-repeat="step in seq.steps"
+                ng-class="{'current-step': seq.isCurrentStep(step)}"
+                ng-click="seq.toggleStep(instrument, step)"
+                class="step">
+              {{ seq.isActiveInstrument(instrument, step) ? 'o' : '' }}
+            </td>
+          </tr>
+        </table>
 
+      </div>
     </div>
 
+    <div id="app">
+      <vue-sequencer inline-template>
+
+        <div class="container">
+
+          <vue-controls inline-template="true"
+                        :is-running="isRunning"
+                        @toggle-sequence="toggleSequence"
+                        :seq="seq">
+            <div class="controls">
+
+              <p>
+              <select :value="seq.duration"
+                 @change="seq.setDuration($event.target.value)">
+                <option v-for="bpm in bpms" :value="bpm">{{bpm}}</option>
+              </select>
+              Duration
+              </p>
+              <p>
+              <form @submit.prevent="seq.setBpm(tempBpm)">
+                <input type="text"
+                       @change="tempBpm = $event.target.value"
+                       :value="seq.bpm">
+                <button>Set BPM</button>
+              </form>
+              </p>
+              <button @click="$emit('toggle-sequence')">
+                {{ isRunning ? 'Stop' : 'Start' }}
+              </button>
+
+            </div>
+          </vue-controls>
+
+          <table class="patterns">
+            <tr>
+              <th>Step</th>
+              <th class="column-header"
+                  v-for="step in seq.steps"
+                  :class="{'current-step': seq.isCurrentStep(step)}">
+                {{ step }}
+              </th>
+            </tr>
+            <tr v-for="instrument in seq.instruments">
+              <th class="row-header">{{ instrument }}</th>
+              <td v-for="step in seq.steps"
+                  :class="{'current-step': seq.isCurrentStep(step)}"
+                  @click="seq.toggleStep(instrument, step)"
+                  class="step">
+                {{ seq.isActiveInstrument(instrument, step) ? 'o' : '' }}
+              </td>
+            </tr>
+          </table>
+
+        </div>
+
+      </vue-sequencer>
+    </div>
     <script type="text/javascript" src="<%= js %>"></script>
   </body>
 </html>
